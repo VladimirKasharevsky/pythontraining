@@ -12,23 +12,14 @@ class TestAddGroup(unittest.TestCase):
         self.wd = webdriver.Firefox()
         self.wd.implicitly_wait(30)
 
-    
-    def test_add_group(self):
-        wd = self.wd
-        #Open home page
-        wd.get("http://localhost/addressbook/")
-        #Login
-        wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys("admin")
-        wd.find_element_by_name("pass").click()
-        wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys("secret")
-        wd.find_element_by_xpath("//input[@value='Login']").click()
-        #Open group page
-        wd.find_element_by_link_text("groups").click()
-        #Init group creation
-        wd.find_element_by_name("new").click()
-        #Fill group info
+    def logout(self, wd):
+        wd.find_element_by_link_text("Logout").click()
+
+    def return_to_group_page(self, wd):
+        wd.find_element_by_link_text("group page").click()
+
+    def create_group(self, wd):
+        # Fill group info
         wd.find_element_by_name("group_name").click()
         wd.find_element_by_name("group_name").clear()
         wd.find_element_by_name("group_name").send_keys("group")
@@ -38,13 +29,36 @@ class TestAddGroup(unittest.TestCase):
         wd.find_element_by_name("group_footer").click()
         wd.find_element_by_name("group_footer").clear()
         wd.find_element_by_name("group_footer").send_keys("footer")
-        #Submit group creation
+        # Submit group creation
         wd.find_element_by_name("submit").click()
-        #Return to group page
-        wd.find_element_by_link_text("group page").click()
-        #Logout
-        wd.find_element_by_link_text("Logout").click()
-    
+
+    def init_group_creation(self, wd):
+        wd.find_element_by_name("new").click()
+
+    def open_group_page(self, wd):
+        wd.find_element_by_link_text("groups").click()
+
+    def login(self, wd):
+        wd.find_element_by_name("user").clear()
+        wd.find_element_by_name("user").send_keys("admin")
+        wd.find_element_by_name("pass").click()
+        wd.find_element_by_name("pass").clear()
+        wd.find_element_by_name("pass").send_keys("secret")
+        wd.find_element_by_xpath("//input[@value='Login']").click()
+
+    def open_start_page(self, wd):
+        wd.get("http://localhost/addressbook/")
+
+    def test_add_group(self):
+        wd = self.wd
+        self.open_start_page(wd)
+        self.login(wd)
+        self.open_group_page(wd)
+        self.init_group_creation(wd)
+        self.create_group(wd)
+        self.return_to_group_page(wd)
+        self.logout(wd)
+
     def is_element_present(self, how, what):
         try: self.wd.find_element(by=how, value=what)
         except NoSuchElementException as e: return False
