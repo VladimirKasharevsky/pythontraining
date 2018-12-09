@@ -18,25 +18,25 @@ class TestAddContacts(unittest.TestCase):
     def return_to_home_page(self, wd):
         wd.find_element_by_link_text("home").click()
 
-    def create_contact(self, wd):
+    def create_contact(self, wd, name, last_name, company_name, address, mail):
         # Fill contact info
         wd.find_element_by_xpath(
             "(.//*[normalize-space(text()) and normalize-space(.)='Edit / add address book entry'])[1]/following::label[1]").click()
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
-        wd.find_element_by_name("firstname").send_keys("name")
+        wd.find_element_by_name("firstname").send_keys(name)
         wd.find_element_by_name("lastname").click()
         wd.find_element_by_name("lastname").clear()
-        wd.find_element_by_name("lastname").send_keys("last name")
+        wd.find_element_by_name("lastname").send_keys(last_name)
         wd.find_element_by_name("company").click()
         wd.find_element_by_name("company").clear()
-        wd.find_element_by_name("company").send_keys("company")
+        wd.find_element_by_name("company").send_keys(company_name)
         wd.find_element_by_name("address").click()
         wd.find_element_by_name("address").clear()
-        wd.find_element_by_name("address").send_keys("address")
+        wd.find_element_by_name("address").send_keys(address)
         wd.find_element_by_name("email").click()
         wd.find_element_by_name("email").clear()
-        wd.find_element_by_name("email").send_keys("name@name.ru")
+        wd.find_element_by_name("email").send_keys(mail)
         # Submit contact creation
         wd.find_element_by_xpath(
             "(.//*[normalize-space(text()) and normalize-space(.)='Notes:'])[1]/following::input[1]").click()
@@ -44,27 +44,18 @@ class TestAddContacts(unittest.TestCase):
     def open_add_contact_page(self, wd):
         wd.find_element_by_link_text("add new").click()
 
-    def login(self, wd):
+    def login(self, wd, username, password):
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys("admin")
+        wd.find_element_by_name("user").send_keys(username)
         wd.find_element_by_name("pass").click()
         wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys("secret")
+        wd.find_element_by_name("pass").send_keys(password)
         wd.find_element_by_xpath(
             "(.//*[normalize-space(text()) and normalize-space(.)='Password:'])[1]/following::input[2]").click()
 
     def open_home_page(self, wd):
         wd.get("http://localhost/addressbook/")
-
-    def test_add_contacts(self):
-        wd = self.wd
-        self.open_home_page(wd)
-        self.login(wd)
-        self.open_add_contact_page(wd)
-        self.create_contact(wd)
-        self.return_to_home_page(wd)
-        self.logout(wd)
 
     def is_element_present(self, how, what):
         try: self.wd.find_element(by=how, value=what)
@@ -86,7 +77,16 @@ class TestAddContacts(unittest.TestCase):
                 alert.dismiss()
             return alert_text
         finally: self.accept_next_alert = True
-    
+
+    def test_add_contacts(self):
+        wd = self.wd
+        self.open_home_page(wd)
+        self.login(wd, username="admin", password="secret")
+        self.open_add_contact_page(wd)
+        self.create_contact(wd, name="pyt", last_name="pyt", company_name="pyt", address="pyt", mail="pyt@pyt.py")
+        self.return_to_home_page(wd)
+        self.logout(wd)
+
     def tearDown(self):
         self.wd.quit()
 
