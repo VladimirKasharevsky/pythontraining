@@ -6,6 +6,7 @@ from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
 import unittest, time, re
+from contact import Contact
 
 class TestAddContacts(unittest.TestCase):
     def setUp(self):
@@ -18,25 +19,25 @@ class TestAddContacts(unittest.TestCase):
     def return_to_home_page(self, wd):
         wd.find_element_by_link_text("home").click()
 
-    def create_contact(self, wd, name, last_name, company_name, address, mail):
+    def create_contact(self, wd, contact):
         # Fill contact info
         wd.find_element_by_xpath(
             "(.//*[normalize-space(text()) and normalize-space(.)='Edit / add address book entry'])[1]/following::label[1]").click()
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
-        wd.find_element_by_name("firstname").send_keys(name)
+        wd.find_element_by_name("firstname").send_keys(contact.name)
         wd.find_element_by_name("lastname").click()
         wd.find_element_by_name("lastname").clear()
-        wd.find_element_by_name("lastname").send_keys(last_name)
+        wd.find_element_by_name("lastname").send_keys(contact.last_name)
         wd.find_element_by_name("company").click()
         wd.find_element_by_name("company").clear()
-        wd.find_element_by_name("company").send_keys(company_name)
+        wd.find_element_by_name("company").send_keys(contact.company_name)
         wd.find_element_by_name("address").click()
         wd.find_element_by_name("address").clear()
-        wd.find_element_by_name("address").send_keys(address)
+        wd.find_element_by_name("address").send_keys(contact.address)
         wd.find_element_by_name("email").click()
         wd.find_element_by_name("email").clear()
-        wd.find_element_by_name("email").send_keys(mail)
+        wd.find_element_by_name("email").send_keys(contact.mail)
         # Submit contact creation
         wd.find_element_by_xpath(
             "(.//*[normalize-space(text()) and normalize-space(.)='Notes:'])[1]/following::input[1]").click()
@@ -83,7 +84,7 @@ class TestAddContacts(unittest.TestCase):
         self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
         self.open_add_contact_page(wd)
-        self.create_contact(wd, name="pyt", last_name="pyt", company_name="pyt", address="pyt", mail="pyt@pyt.py")
+        self.create_contact(wd, Contact(name="pyt", last_name="pyt", company_name="pyt", address="pyt", mail="pyt@pyt.py"))
         self.return_to_home_page(wd)
         self.logout(wd)
 
