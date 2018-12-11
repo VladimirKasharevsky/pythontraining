@@ -21,8 +21,7 @@ class TestAddContacts(unittest.TestCase):
 
     def create_contact(self, wd, contact):
         # Fill contact info
-        wd.find_element_by_xpath(
-            "(.//*[normalize-space(text()) and normalize-space(.)='Edit / add address book entry'])[1]/following::label[1]").click()
+        wd.find_element_by_xpath("//div[@id='content']/form/label").click()
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
         wd.find_element_by_name("firstname").send_keys(contact.name)
@@ -39,8 +38,7 @@ class TestAddContacts(unittest.TestCase):
         wd.find_element_by_name("email").clear()
         wd.find_element_by_name("email").send_keys(contact.mail)
         # Submit contact creation
-        wd.find_element_by_xpath(
-            "(.//*[normalize-space(text()) and normalize-space(.)='Notes:'])[1]/following::input[1]").click()
+        wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
 
     def open_add_contact_page(self, wd):
         wd.find_element_by_link_text("add new").click()
@@ -52,9 +50,7 @@ class TestAddContacts(unittest.TestCase):
         wd.find_element_by_name("pass").click()
         wd.find_element_by_name("pass").clear()
         wd.find_element_by_name("pass").send_keys(password)
-        wd.find_element_by_xpath(
-            "(.//*[normalize-space(text()) and normalize-space(.)='Password:'])[1]/following::input[2]").click()
-
+        wd.find_element_by_xpath("//input[@value='Login']").click()
     def open_home_page(self, wd):
         wd.get("http://localhost/addressbook/")
 
