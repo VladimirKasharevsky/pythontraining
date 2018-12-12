@@ -9,6 +9,10 @@ def app(request):
         return fixture
 
 
+def setUp(self):
+    self.app = Application()
+
+
 def test_add_contacts(app):
     app.session.login(username="admin", password="secret")
     app.contact.open_add_contact_page()
