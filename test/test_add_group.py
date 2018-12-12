@@ -16,7 +16,7 @@ def setUp(self):
 
 def test_add_group(app):
     app.session.login(username="admin", password="secret")
-    app.open_group_page()
-    app.init_group_creation()
-    app.create_group(Group(name="pyt", header="pyt", footer="pyt"))
+    app.group.open_group_page()
+    app.group.init_group_creation()
+    app.group.create(Group(name="pyt", header="pyt", footer="pyt"))
     app.session.logout()
