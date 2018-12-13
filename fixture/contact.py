@@ -28,6 +28,7 @@ class ContactHelper:
         wd.find_element_by_name("email").send_keys(contact.mail)
         # Submit contact creation
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
+        self.return_to_home_page()
 
     def open_add_contact_page(self):
         wd = self.app.wd
