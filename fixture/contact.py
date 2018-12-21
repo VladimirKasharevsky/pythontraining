@@ -32,7 +32,8 @@ class ContactHelper:
 
     def open_add_contact_page(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("add new").click()
+        if  wd.current_url.endswith("addressbook/") and wd.find_element_by_xpath("//a[text()='add new']"):
+            wd.find_element_by_link_text("add new").click()
 
     def delete_first_contact(self):
         wd = self.app.wd
@@ -77,7 +78,6 @@ class ContactHelper:
 
     def count(self):
         wd = self.app.wd
-        #self.open_add_contact_page()
         return len(wd.find_elements_by_name("selected[]"))
 
 
